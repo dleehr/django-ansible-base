@@ -16,7 +16,7 @@ class ApiOAuthAuthorizationRootView(AnsibleBaseDjangoAppApiView):
 
     def get(self, request, format=None):
         data = OrderedDict()
-        data['authorize'] = get_relative_url('authorize')
-        data['revoke_token'] = get_relative_url('revoke-token')
-        data['token'] = get_relative_url('token')
+        data['authorize'] = get_relative_url('oauth2_provider:authorize')
+        data['revoke_token'] = get_relative_url('oauth2_provider:revoke-token')
+        data['token'] = get_relative_url('oauth2_provider:token')
         return Response(data)
