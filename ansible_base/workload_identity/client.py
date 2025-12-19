@@ -1,9 +1,11 @@
+import json
 import logging
 import time
 
 import requests
 
 from ansible_base.resource_registry.resource_server import get_resource_server_config, get_service_token
+from ansible_base.workload_identity.serializers import WorkloadIdentitySerializer
 
 logger = logging.getLogger('ansible_base.workload_identity.client')
 
@@ -41,11 +43,12 @@ class WorkloadIdentityClient:
         self._jwt = get_service_token(self.jwt_user_id, expiration=self.jwt_expiration)
 
     def create_workload_identity_token(self, data: dict):
+        instance = {"workload_details": data, "audience": "oidc-demo"}
+        serializer = WorkloadIdentitySerializer(instance)
         # make a request to /workload_identity_tokens
         url = f"{self.service_url}/api/gateway/v1/workload_identity_tokens/"
         headers = {self.header_name: self.jwt}
-        logger.info("headers f{headers}")
-        response = requests.post(url=url, data=data, headers=headers)
+        response = requests.post(url=url, json=serializer.data, headers=headers)
         response.raise_for_status()
         # If we succeeded, JWT will be in jwt
         return response.json()
