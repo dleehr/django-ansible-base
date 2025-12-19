@@ -38,10 +38,12 @@ class WorkloadIdentityClient:
     def create_workload_identity_token(self, data: dict):
         # make a request to /workload_identity_tokens
         url = f"{self.service_url}/api/gateway/v1/workload_identity_tokens/"
+        headers = {self.header_name: self.jwt}
+        logger.info("headers f{headers}")
         response = requests.post(
             url=url,
             data=data,
-            headers={self.header_name: self.jwt},
+            headers=headers
         )
         response.raise_for_status()
         # If we succeeded, JWT will be in jwt
