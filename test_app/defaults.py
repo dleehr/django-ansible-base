@@ -209,7 +209,4 @@ JUST_A_TEST = 41
 with open(os.getenv('OIDC_RSA_PRIVATE_KEY_FILE', 'oidc.key'), 'r') as f:
     private_key = f.read()
 
-OAUTH2_PROVIDER = {
-    "OIDC_ENABLED": True,
-    "OIDC_RSA_PRIVATE_KEY": private_key
-}
+OAUTH2_PROVIDER = {"OIDC_ENABLED": True, "OIDC_RSA_PRIVATE_KEY": private_key}
