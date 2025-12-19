@@ -11,6 +11,11 @@ from django.conf import settings
 
 
 class WorkloadIdentityClient:
+    """
+    Docstring for WorkloadIdentityClient
+
+    This could probably just be a subclass or special case of ResourceAPIClient
+    """
 
     header_name = "X-ANSIBLE-SERVICE-AUTH"
     _jwt_timeout = None
@@ -40,11 +45,7 @@ class WorkloadIdentityClient:
         url = f"{self.service_url}/api/gateway/v1/workload_identity_tokens/"
         headers = {self.header_name: self.jwt}
         logger.info("headers f{headers}")
-        response = requests.post(
-            url=url,
-            data=data,
-            headers=headers
-        )
+        response = requests.post(url=url, data=data, headers=headers)
         response.raise_for_status()
         # If we succeeded, JWT will be in jwt
         return response.json()
