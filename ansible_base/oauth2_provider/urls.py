@@ -1,6 +1,7 @@
 from django.urls import include, path, re_path
 from oauth2_provider import views as oauth_views
 from oauth2_provider.urls import oidc_urlpatterns
+
 from ansible_base.lib.routers import AssociationResourceRouter
 from ansible_base.oauth2_provider import views as oauth2_provider_views
 from ansible_base.oauth2_provider.apps import Oauth2ProviderConfig
