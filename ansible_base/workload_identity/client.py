@@ -42,8 +42,8 @@ class WorkloadIdentityClient:
         # user id is likely None, we should set this
         self._jwt = get_service_token(self.jwt_user_id, expiration=self.jwt_expiration)
 
-    def create_workload_identity_token(self, data: dict):
-        instance = {"workload_details": data, "audience": "oidc-demo"}
+    def create_workload_identity_token(self, audience: str, claims: dict):
+        instance = {"claims": claims, "audience": audience}
         serializer = WorkloadIdentitySerializer(instance)
         # make a request to /workload_identity_tokens
         url = f"{self.service_url}/api/gateway/v1/workload_identity_tokens/"
