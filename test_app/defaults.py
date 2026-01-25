@@ -205,3 +205,13 @@ RESOURCE_SERVER_SYNC_ENABLED = False
 RENAMED_USERNAME_PREFIX = "dab:"
 
 JUST_A_TEST = 41
+
+with open(os.getenv('OIDC_RSA_PRIVATE_KEY_FILE', 'oidc.key'), 'r') as f:
+    private_key = f.read()
+
+OAUTH2_PROVIDER = {
+    "OIDC_ENABLED": True,
+    "OIDC_RSA_PRIVATE_KEY": private_key,
+    "OAUTH2_VALIDATOR_CLASS": "ansible_base.workload_identity.CustomValidator",
+    "SCOPES": {"aap_controller_automation_job": "Automation Controller Job"},
+}
