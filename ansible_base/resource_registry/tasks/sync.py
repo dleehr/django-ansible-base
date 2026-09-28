@@ -300,10 +300,23 @@ def get_managed_resource(manifest_item: ManifestItem) -> Resource | None:
 
 
 def get_resource_type_names() -> list[str]:
-    """Ordered list of registered resource types."""
+    """Ordered list of registered resource types.
+
+    Mirrors the naming logic in apps._sync_resource_types(): a shared
+    (managed_serializer) type is named after its serializer's RESOURCE_TYPE,
+    not the local model's class name. Those can differ - e.g. EDA's local
+    model is `EdaCredential` but it participates in the same `shared.credential`
+    resource type as Controller's `Credential` and Gateway's `Credential`.
+    """
     registry = get_registry()
     resources = registry.get_resources()
-    return [f"shared.{rt.model._meta.model_name}" for _, rt in sorted(resources.items())]
+    names = []
+    for _, rt in sorted(resources.items()):
+        if rt.managed_serializer:
+            names.append(f"shared.{rt.managed_serializer.RESOURCE_TYPE}")
+        else:
+            names.append(f"{registry.api_config.service_type}.{rt.model._meta.model_name}")
+    return names
 
 
 def _handle_conflict(resource_data: dict, resource_type: ResourceType, api_client: ResourceAPIClient):

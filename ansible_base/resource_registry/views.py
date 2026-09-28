@@ -375,9 +375,13 @@ class ResourceTypeViewSet(
         resources = list(resources)
         count = len(resources)  # force evaluation to avoid lazy queryset issues in streaming response
 
-        if not resources:
-            return HttpResponseNotFound()
-
+        # A registered resource type legitimately having zero live instances
+        # (e.g. the last Credential was just deleted) is a valid, complete
+        # empty manifest - not "not found". Returning 404 here would make
+        # fetch_manifest() raise ManifestNotFound and skip reconciliation
+        # entirely, so consumers could never learn the last remaining item
+        # was deleted. `get_object_or_404` above already handles the actual
+        # unknown-resource-type-name 404 case.
         resp = CSVStreamResponse(self.serialize_resources_hashes(resources, resource_type.serializer_class)).stream()
         resp.headers["X-Resource-Count"] = str(count)
         return resp

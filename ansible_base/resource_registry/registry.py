@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from ansible_base.lib.utils.apps import is_rbac_installed
 from ansible_base.resource_registry.constants import (
     SHARED_AAP_FLAG_RESOURCE_TYPE,
+    SHARED_CREDENTIAL_RESOURCE_TYPE,
     SHARED_ORGANIZATION_RESOURCE_TYPE,
     SHARED_ROLE_DEFINITION_RESOURCE_TYPE,
     SHARED_TEAM_RESOURCE_TYPE,
@@ -38,6 +39,7 @@ class ServiceAPIConfig:
             SHARED_ORGANIZATION_RESOURCE_TYPE: ResourceTypeProcessor,
             SHARED_USER_RESOURCE_TYPE: ResourceTypeProcessor,
             SHARED_AAP_FLAG_RESOURCE_TYPE: ResourceTypeProcessor,
+            SHARED_CREDENTIAL_RESOURCE_TYPE: ResourceTypeProcessor,
         }
         if is_rbac_installed():
             processors[SHARED_ROLE_DEFINITION_RESOURCE_TYPE] = RoleDefinitionProcessor

@@ -131,6 +131,26 @@ class RoleDefinitionType(SharedResourceTypeSerializer):
             raise
 
 
+class SharedCredential(SharedResourceTypeSerializer):
+    """
+    Only CredentialTypes with zero secret fields at rest are eligible to sync
+    (see is_secret_free_credential_type) - these are managed/system types that
+    already exist independently, identically-named, on every service (e.g.
+    "HashiCorp Vault Secret Lookup (OIDC)"). So credential_type is carried as
+    a plain name here, resolved to each service's own local CredentialType
+    row, rather than as a cross-service resource reference - there is no
+    user-authored CredentialType data that actually needs to sync.
+    """
+
+    RESOURCE_TYPE = "credential"
+    UNIQUE_FIELDS = ("name",)
+
+    name = serializers.CharField()
+    organization = AnsibleResourceForeignKeyField("shared.organization", required=False, allow_null=True)
+    credential_type = serializers.CharField(source='credential_type_name')
+    inputs = serializers.JSONField(default=dict)
+
+
 class FeatureFlagType(SharedResourceTypeSerializer):
     RESOURCE_TYPE = "aapflag"
     UNIQUE_FIELDS = (
