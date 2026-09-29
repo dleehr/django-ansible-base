@@ -19,3 +19,22 @@ def is_secret_free_credential_type(inputs: dict) -> bool:
     secret_fields = {f['id'] for f in fields if f.get('secret') is True}
     internal_fields = {f['id'] for f in fields if f.get('internal') is True}
     return secret_fields.issubset(internal_fields)
+
+
+def has_workload_identity_token_field(inputs: dict) -> bool:
+    """
+    Return True if a CredentialType's `inputs` schema declares an internal
+    `workload_identity_token` field.
+
+    A CredentialType meeting this bar expects to have a JWT injected at
+    execution time (e.g. by populate_workload_identity_tokens() in Controller,
+    or the equivalent resolution path in EDA) rather than ever storing a real
+    token value. Used to decide whether a given CredentialInputSource's
+    source_credential needs a freshly-minted workload identity token before
+    its plugin backend is invoked.
+
+    Deliberately takes the raw `inputs` dict (not a model instance), matching
+    is_secret_free_credential_type() above, so it works identically against
+    Controller's and EDA's CredentialType schemas.
+    """
+    return any(field.get('id') == 'workload_identity_token' and field.get('internal') for field in inputs.get('fields', []))

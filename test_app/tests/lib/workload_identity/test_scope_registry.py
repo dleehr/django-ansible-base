@@ -1,10 +1,16 @@
-from ansible_base.lib.workload_identity import SCOPE_REGISTRY, AutomationControllerJobScope
+from ansible_base.lib.workload_identity import SCOPE_REGISTRY, AutomationControllerJobScope, EDACredentialResolutionScope
 
 
 def test_scope_registry_contains_controller_scope():
     """Test that SCOPE_REGISTRY contains the AutomationControllerJobScope."""
     assert "aap_controller_automation_job" in SCOPE_REGISTRY
     assert SCOPE_REGISTRY["aap_controller_automation_job"] == AutomationControllerJobScope
+
+
+def test_scope_registry_contains_eda_scope():
+    """Test that SCOPE_REGISTRY contains the EDACredentialResolutionScope."""
+    assert "aap_eda_credential_resolution" in SCOPE_REGISTRY
+    assert SCOPE_REGISTRY["aap_eda_credential_resolution"] == EDACredentialResolutionScope
 
 
 def test_scope_registry_lookup():
