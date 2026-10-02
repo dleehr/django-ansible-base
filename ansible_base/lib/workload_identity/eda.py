@@ -1,7 +1,7 @@
 """
 OIDC Workload Identity Scope for AAP EDA.
 
-Defines the scope and claims for EDA credential-resolution workload identity.
+Defines the scope and claims for EDA automation credential-resolution workload identity.
 """
 
 from .base import BaseWorkloadIdentityScope
@@ -9,7 +9,7 @@ from .base import BaseWorkloadIdentityScope
 
 class EDACredentialResolutionScope(BaseWorkloadIdentityScope):
     """
-    Default scope for AAP EDA credential-resolution workload identity.
+    Default scope for AAP EDA automation credential-resolution workload identity.
 
     Covers every place EDA resolves a CredentialInputSource against an
     external secrets backend (event stream signature validation, activation
@@ -19,8 +19,8 @@ class EDACredentialResolutionScope(BaseWorkloadIdentityScope):
     job type in Controller.
     """
 
-    name = "aap_eda_credential_resolution"
-    description = "Default AAP EDA credential resolution workload identity"
+    name = "aap_eda_automation_credential_resolution"
+    description = "Default AAP EDA automation credential resolution workload identity"
 
     CLAIM_ORGANIZATION_NAME = 'aap_eda_organization_name'
     CLAIM_ORGANIZATION_ID = 'aap_eda_organization_id'

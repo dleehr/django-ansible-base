@@ -57,18 +57,18 @@ def test_get_target_claim_names_to_sub_stubs_keys_are_valid_claims():
                 'aap_eda_organization_name': 'my-org',
                 'aap_eda_target_credential_name': 'my-credential',
             },
-            "workload_type:aap_eda_credential_resolution:organization:my-org:credential:my-credential",
+            "workload_type:aap_eda_automation_credential_resolution:organization:my-org:credential:my-credential",
         ),
         (
             {
                 'aap_eda_organization_name': '',
                 'aap_eda_target_credential_name': '',
             },
-            "workload_type:aap_eda_credential_resolution:organization::credential:",
+            "workload_type:aap_eda_automation_credential_resolution:organization::credential:",
         ),
         (
             {'aap_eda_target_credential_name': 'my-credential'},
-            "workload_type:aap_eda_credential_resolution:organization::credential:my-credential",
+            "workload_type:aap_eda_automation_credential_resolution:organization::credential:my-credential",
         ),
     ],
 )

@@ -9,8 +9,8 @@ def test_scope_registry_contains_controller_scope():
 
 def test_scope_registry_contains_eda_scope():
     """Test that SCOPE_REGISTRY contains the EDACredentialResolutionScope."""
-    assert "aap_eda_credential_resolution" in SCOPE_REGISTRY
-    assert SCOPE_REGISTRY["aap_eda_credential_resolution"] == EDACredentialResolutionScope
+    assert "aap_eda_automation_credential_resolution" in SCOPE_REGISTRY
+    assert SCOPE_REGISTRY["aap_eda_automation_credential_resolution"] == EDACredentialResolutionScope
 
 
 def test_scope_registry_lookup():
