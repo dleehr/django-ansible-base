@@ -128,5 +128,19 @@ def sync_to_resource_server(instance, action, ansible_id=None):
         elif action == "delete":
             client.delete_resource(ansible_id)
     except Exception as e:
+        # A delete is idempotent: resources that were intentionally never
+        # reverse-synced (for example, secret-bearing credentials) are absent
+        # from the resource server already. Treat that response as success so
+        # deleting the local object can proceed.
+        remote_status = getattr(getattr(e, "response", None), "status_code", None)
+        if action == "delete" and remote_status == 404:
+            logger.info(
+                "Resource %s (%s) is already absent from the resource server; "
+                "skipping remote delete",
+                instance,
+                ansible_id,
+            )
+            return
+
         logger.exception(f"Failed to sync {action} of resource {instance} ({ansible_id}) to resource server: {e}")
         raise ValidationError(_("Failed to sync resource to resource server")) from e
